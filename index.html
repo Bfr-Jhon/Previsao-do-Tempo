@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Clima App</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./assets/style/style.css">
 </head>
 <body>
 
@@ -14,23 +14,8 @@
 
   <div id="resultado"></div>
 
-  <script type="module">
-    import { buscarCidade } from "./src/api.js";
-
-    const botao = document.getElementById("buscar");
-    const resultado = document.getElementById("resultado");
-
-    botao.addEventListener("click", async () => {
-      const cidade = document.getElementById("cidade").value;
-
-      try {
-        const dados = await buscarCidade(cidade);
-        resultado.innerText = `Temperatura: ${dados.temperatura}°C`;
-      } catch (erro) {
-        resultado.innerText = erro.message;
-      }
-    });
-  </script>
+  <!-- 👇 script NORMAL -->
+  <script src="./assets/script/api.js"></script>
 
 </body>
 </html>

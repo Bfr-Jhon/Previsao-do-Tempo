@@ -1,15 +1,76 @@
+/* RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CORPO DA PÁGINA */
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin-top: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+  color: #fff;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-input, button {
-  padding: 10px;
-  margin: 5px;
+/* TÍTULO */
+h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
 }
 
+/* INPUT */
+input {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  width: 250px;
+}
+
+/* BOTÃO */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2d3436;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #636e72;
+}
+
+/* RESULTADO */
 #resultado {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ===== OPCIONAL: MODO NOTURNO (já pronto pra usar depois) ===== */
+body.dark {
+  background: linear-gradient(135deg, #2d3436, #000000);
+}
+
+/* RESPONSIVO */
+@media (max-width: 500px) {
+  input {
+    width: 200px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
 }
