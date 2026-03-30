@@ -2,22 +2,22 @@ const { buscarCidade } = require("../assets/script/api");
 
 global.fetch = jest.fn();
 
-describe("Testes da API de clima", () => {
+describe("Testes da função buscarCidade", () => {
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test("Cidade válida retorna temperatura", async () => {
     fetch
       .mockResolvedValueOnce({
-        ok: true,
+        ok: true, // ✅ necessário
         json: async () => ({
-          results: [{ latitude: -22.9, longitude: -43.2, name: "Rio de Janeiro" }]
+          results: [{ latitude: -22.9, longitude: -43.2 }]
         })
       })
       .mockResolvedValueOnce({
-        ok: true,
+        ok: true, // ✅ necessário
         json: async () => ({
           current_weather: { temperature: 30 }
         })
@@ -25,35 +25,39 @@ describe("Testes da API de clima", () => {
 
     const resultado = await buscarCidade("Rio de Janeiro");
 
-    expect(resultado).toEqual({
-      cidade: "Rio de Janeiro",
-      temperatura: 30
-    });
+    expect(resultado).toEqual({ temperatura: 30 });
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 
-  test("Cidade inválida lança erro", async () => {
+  test("Cidade inexistente lança erro", async () => {
     fetch.mockResolvedValueOnce({
-      ok: true,
+      ok: true, // ✅ necessário para não disparar "Erro na API"
       json: async () => ({ results: [] })
     });
 
     await expect(buscarCidade("CidadeFake"))
-      .rejects
-      .toThrow("Cidade não encontrada");
+      .rejects.toThrow("Cidade não encontrada");
   });
 
-  test("Entrada vazia", async () => {
+  test("Entrada vazia lança erro", async () => {
     await expect(buscarCidade(""))
-      .rejects
-      .toThrow("Cidade não informada");
+      .rejects.toThrow("Cidade não informada");
   });
 
-  test("Erro na API", async () => {
-    fetch.mockResolvedValueOnce({ ok: false });
+  test("Erro na API lança erro específico", async () => {
+    fetch.mockResolvedValueOnce({
+      ok: false // simula falha da API
+    });
 
     await expect(buscarCidade("Rio"))
-      .rejects
-      .toThrow("Erro na API de geolocalização");
+      .rejects.toThrow("Erro na API");
+  });
+
+  test("Erro de rede lança erro genérico", async () => {
+    fetch.mockRejectedValueOnce(new Error("Erro de rede"));
+
+    await expect(buscarCidade("Rio"))
+      .rejects.toThrow("Erro ao buscar dados da API");
   });
 
 });

@@ -1,3 +1,24 @@
+/**
+ * @fileoverview Funções responsáveis por buscar dados de clima na API Open-Meteo
+ * e integrar com o DOM da aplicação.
+ */
+
+/**
+ * Busca dados de clima de uma cidade usando a API Open-Meteo.
+ *
+ * @async
+ * @param {string} nomeCidade - Nome da cidade a ser buscada.
+ * @returns {Promise<{temperatura: number}>} Objeto contendo a temperatura atual.
+ *
+ * @throws {Error} Se o nome da cidade estiver vazio.
+ * @throws {Error} Se a cidade não for encontrada.
+ * @throws {Error} Se houver falha na requisição da API.
+ *
+ * @example
+ * buscarCidade("Rio de Janeiro")
+ *   .then(dados => console.log(dados.temperatura))
+ *   .catch(erro => console.error(erro.message));
+ */
 async function buscarCidade(nomeCidade) {
   if (!nomeCidade || nomeCidade.trim() === "") {
     throw new Error("Cidade não informada");
@@ -5,56 +26,47 @@ async function buscarCidade(nomeCidade) {
 
   try {
     const urlGeo = `https://geocoding-api.open-meteo.com/v1/search?name=${nomeCidade}&count=1&language=pt&format=json`;
+    const respostaGeo = await fetch(urlGeo);
 
-    const geoResponse = await fetch(urlGeo);
-
-    if (!geoResponse.ok) {
-      throw new Error("Erro na API de geolocalização");
+    if (!respostaGeo.ok) {
+      throw new Error("Erro na API");
     }
 
-    const geoData = await geoResponse.json();
+    const dadosGeo = await respostaGeo.json();
 
-    if (!geoData.results || geoData.results.length === 0) {
+    if (!dadosGeo.results || dadosGeo.results.length === 0) {
       throw new Error("Cidade não encontrada");
     }
 
-    const { latitude, longitude, name } = geoData.results[0];
+    const { latitude, longitude } = dadosGeo.results[0];
 
     const urlClima = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+    const respostaClima = await fetch(urlClima);
 
-    const climaResponse = await fetch(urlClima);
-
-    if (!climaResponse.ok) {
-      throw new Error("Erro na API de clima");
+    if (!respostaClima.ok) {
+      throw new Error("Erro na API");
     }
 
-    const climaData = await climaResponse.json();
-
-    if (!climaData.current_weather) {
-      throw new Error("Formato inesperado da resposta");
-    }
+    const dadosClima = await respostaClima.json();
 
     return {
-      cidade: name,
-      temperatura: climaData.current_weather.temperature,
+      temperatura: dadosClima.current_weather.temperature
     };
 
   } catch (erro) {
-    throw new Error(erro.message || "Erro inesperado");
+    // preserva erros esperados
+    if (["Cidade não encontrada", "Cidade não informada", "Erro na API"].includes(erro.message)) {
+      throw erro;
+    }
+    // outros erros caem aqui (ex: rede)
+    throw new Error("Erro ao buscar dados da API");
   }
 }
 
-/* 👇 FUNCIONA NO JEST */
-if (typeof module !== "undefined") {
-  module.exports = { buscarCidade };
-}
+/* =======================
+   INTEGRAÇÃO COM O DOM
+   ======================= */
 
-/* 👇 FUNCIONA NO NAVEGADOR */
-if (typeof window !== "undefined") {
-  window.buscarCidade = buscarCidade;
-}
-
-/* 👇 DOM FICA AQUI (como você pediu) */
 if (typeof document !== "undefined") {
   const botao = document.getElementById("buscar");
 
@@ -65,10 +77,12 @@ if (typeof document !== "undefined") {
 
       try {
         const dados = await buscarCidade(cidade);
-        resultado.innerText = `${dados.cidade}: ${dados.temperatura}°C`;
+        resultado.innerText = `Temperatura: ${dados.temperatura}°C`;
       } catch (erro) {
         resultado.innerText = erro.message;
       }
     });
   }
 }
+
+module.exports = { buscarCidade };
