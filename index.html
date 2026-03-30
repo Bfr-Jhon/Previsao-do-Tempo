@@ -2,22 +2,35 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Previsão do Tempo</title>
-  <link rel="stylesheet" href="./assets/style/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+  <title>Clima App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <h1>🌤️ Previsão do Tempo</h1>
+  <h1>Clima</h1>
 
-    <input type="text" id="cidade" placeholder="Digite uma cidade">
-    <button id="buscar">Buscar</button>
+  <input type="text" id="cidade" placeholder="Digite a cidade">
+  <button id="buscar">Buscar</button>
 
-    <div id="resultado"></div>
-  </div>
+  <div id="resultado"></div>
 
-  <script src="./assets/script/api.js"></script>
+  <script type="module">
+    import { buscarCidade } from "./src/api.js";
+
+    const botao = document.getElementById("buscar");
+    const resultado = document.getElementById("resultado");
+
+    botao.addEventListener("click", async () => {
+      const cidade = document.getElementById("cidade").value;
+
+      try {
+        const dados = await buscarCidade(cidade);
+        resultado.innerText = `Temperatura: ${dados.temperatura}°C`;
+      } catch (erro) {
+        resultado.innerText = erro.message;
+      }
+    });
+  </script>
+
 </body>
 </html>
