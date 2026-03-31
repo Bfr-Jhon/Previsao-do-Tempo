@@ -2,19 +2,44 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Clima App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clima — Previsão do Tempo</title>
   <link rel="stylesheet" href="./assets/style/style.css">
 </head>
 <body>
 
-  <h1>Clima</h1>
+  <button id="theme-toggle" aria-label="Alternar tema">
+    <span id="theme-icon">🌙</span>
+    <span id="theme-label">Escuro</span>
+  </button>
 
-  <input type="text" id="cidade" placeholder="Digite a cidade">
-  <button id="buscar">Buscar</button>
+  <div class="container">
 
-  <div id="resultado"></div>
+    <!-- Header -->
+    <div class="header">
+      <span class="icon">🌤️</span>
+      <h1>Clima<span>.</span></h1>
+      <p>Previsão em tempo real para qualquer cidade</p>
+    </div>
+
+    <!-- Search card -->
+    <div class="search-card" id="search-section">
+      <div class="input-group">
+        <span class="input-icon">🔍</span>
+        <input type="text" id="cidade" placeholder="Ex: São Paulo, Rio de Janeiro..." autocomplete="off" />
+      </div>
+      <button class="btn-primary" id="buscar">
+        <span>Buscar clima</span>
+        <span>→</span>
+      </button>
+      <div id="resultado"></div>
+    </div>
+
+    <!-- Result card (hidden initially) -->
+    <div id="result-section" style="display:none;"></div>
+
+  </div>
 
   <script src="./assets/script/api.js"></script>
-
 </body>
 </html>

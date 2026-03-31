@@ -13,7 +13,7 @@ describe("Testes da função buscarCidade", () => {
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({
-          results: [{ latitude: -22.9, longitude: -43.2 }]
+          results: [{ latitude: -22.9, longitude: -43.2, name: "Rio de Janeiro", country: "BR" }]
         })
       })
       .mockResolvedValueOnce({
@@ -30,11 +30,12 @@ describe("Testes da função buscarCidade", () => {
 
     const resultado = await buscarCidade("Rio de Janeiro");
 
-    expect(resultado).toEqual({
+    expect(resultado).toMatchObject({
       temperatura: 30,
       umidade: 70,
       vento: 10,
-      precipitacao: 5
+      precipitacao: 5,
+      nomeCidade: "Rio de Janeiro",
     });
   });
 
@@ -53,10 +54,27 @@ describe("Testes da função buscarCidade", () => {
       .rejects.toThrow("Cidade não informada");
   });
 
-  test("Erro na API lança erro específico", async () => {
-    fetch.mockResolvedValueOnce({
-      ok: false
-    });
+  test("Entrada só com espaços lança erro de cidade não informada", async () => {
+    await expect(buscarCidade("   "))
+      .rejects.toThrow("Cidade não informada");
+  });
+
+  test("Erro na API de geolocalização lança erro específico", async () => {
+    fetch.mockResolvedValueOnce({ ok: false });
+
+    await expect(buscarCidade("Rio"))
+      .rejects.toThrow("Erro na API");
+  });
+
+  test("Erro na API de clima lança erro específico", async () => {
+    fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          results: [{ latitude: -22.9, longitude: -43.2, name: "Rio", country: "BR" }]
+        })
+      })
+      .mockResolvedValueOnce({ ok: false });
 
     await expect(buscarCidade("Rio"))
       .rejects.toThrow("Erro na API");
