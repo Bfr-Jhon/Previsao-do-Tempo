@@ -1,11 +1,9 @@
-/* RESET BÁSICO */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* CORPO DA PÁGINA */
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: linear-gradient(135deg, #74b9ff, #0984e3);
@@ -18,13 +16,11 @@ body {
   justify-content: center;
 }
 
-/* TÍTULO */
 h1 {
   margin-bottom: 20px;
   font-size: 2.5rem;
 }
 
-/* INPUT */
 input {
   padding: 10px 15px;
   border: none;
@@ -35,7 +31,6 @@ input {
   width: 250px;
 }
 
-/* BOTÃO */
 button {
   padding: 10px 20px;
   border: none;
@@ -51,20 +46,36 @@ button:hover {
   background-color: #636e72;
 }
 
-/* RESULTADO */
 #resultado {
   margin-top: 20px;
-  font-size: 1.3rem;
-  font-weight: bold;
   text-align: center;
 }
 
-/* ===== OPCIONAL: MODO NOTURNO (já pronto pra usar depois) ===== */
+/* CARD BONITO */
+.card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  width: 260px;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  margin: 5px 0;
+  font-size: 1.1rem;
+}
+
+/* modo dark opcional */
 body.dark {
   background: linear-gradient(135deg, #2d3436, #000000);
 }
 
-/* RESPONSIVO */
 @media (max-width: 500px) {
   input {
     width: 200px;

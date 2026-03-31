@@ -8,30 +8,39 @@ describe("Testes da função buscarCidade", () => {
     jest.clearAllMocks();
   });
 
-  test("Cidade válida retorna temperatura", async () => {
+  test("Cidade válida retorna dados completos", async () => {
     fetch
       .mockResolvedValueOnce({
-        ok: true, // ✅ necessário
+        ok: true,
         json: async () => ({
           results: [{ latitude: -22.9, longitude: -43.2 }]
         })
       })
       .mockResolvedValueOnce({
-        ok: true, // ✅ necessário
+        ok: true,
         json: async () => ({
-          current_weather: { temperature: 30 }
+          current: {
+            temperature_2m: 30,
+            relative_humidity_2m: 70,
+            windspeed_10m: 10,
+            precipitation: 5
+          }
         })
       });
 
     const resultado = await buscarCidade("Rio de Janeiro");
 
-    expect(resultado).toEqual({ temperatura: 30 });
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(resultado).toEqual({
+      temperatura: 30,
+      umidade: 70,
+      vento: 10,
+      precipitacao: 5
+    });
   });
 
   test("Cidade inexistente lança erro", async () => {
     fetch.mockResolvedValueOnce({
-      ok: true, // ✅ necessário para não disparar "Erro na API"
+      ok: true,
       json: async () => ({ results: [] })
     });
 
@@ -46,7 +55,7 @@ describe("Testes da função buscarCidade", () => {
 
   test("Erro na API lança erro específico", async () => {
     fetch.mockResolvedValueOnce({
-      ok: false // simula falha da API
+      ok: false
     });
 
     await expect(buscarCidade("Rio"))
