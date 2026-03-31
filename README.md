@@ -1,25 +1,26 @@
 # 🌤️ Aplicativo de Previsão do Tempo
 
-Aplicação web simples que consome a API Open-Meteo para exibir a temperatura atual de uma cidade informada pelo usuário.
+Aplicação web simples que consome a API Open-Meteo para exibir dados meteorológicos de uma cidade informada pelo usuário.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- Buscar temperatura por nome da cidade
-- Validação de entrada
-- Tratamento de erros
-- Integração com API externa
-- Testes automatizados com Jest
+- 🔍 Busca de clima por nome da cidade  
+- 🌡️ Exibição da temperatura atual  
+- ⚠️ Validação de entrada do usuário  
+- 🛡️ Tratamento de erros (cidade inválida ou falha na API)  
+- 🔗 Integração com API externa (Open-Meteo)  
+- 🧪 Testes automatizados com Jest  
 
 ---
 
 ## 🛠️ Tecnologias
 
-- JavaScript (puro)
+- JavaScript (Vanilla)
 - HTML5
 - CSS3
-- Jest (testes)
+- Jest (testes automatizados)
 
 ---
 
@@ -44,40 +45,42 @@ projeto_clima/
 ## ▶️ Como executar o projeto
 
 1. Clone o repositório:
+```bash
 git clone https://github.com/Bfr-Jhon/Previsao-do-Tempo.git
 
-
-2. Acesse a pasta:
+Acesse a pasta:
 cd Previsao-do-Tempo
+Abra o arquivo index.html no navegador
 
 
-3. Abra o `index.html` no navegador
-
----
-
-## 🧪 Como rodar os testes
-npm install
-npm test
+🧪 Como rodar os testes
+Instale as dependências: npm install
+Execute os testes: npm test
 
 
----
+✅ Cenários testados
 
-## ✅ Cenários testados
+✔️ Cidade válida retorna temperatura
+✔️ Cidade inexistente retorna erro
+✔️ Entrada vazia retorna erro
+✔️ Falha na API tratada corretamente
 
-- Cidade válida retorna temperatura
-- Cidade inexistente retorna erro
-- Entrada vazia retorna erro
-- Falha na API tratada corretamente
 
----
+🔒 Segurança e Boas Práticas
 
-## ⚠️ Observações
+Nenhuma chave de API é exposta (Open-Meteo não requer autenticação)
+Uso de try/catch para tratamento de erros
+Validação de entrada do usuário
+Uso de mocks nos testes para evitar dependência externa
 
-- Os testes utilizam **mock do fetch**, evitando chamadas reais à API.
-- O código foi estruturado para funcionar tanto no navegador quanto no ambiente de testes (Node.js).
 
----
+⚠️ Observações
+Os testes utilizam mock do fetch, evitando chamadas reais à API
+O código foi estruturado para funcionar tanto no navegador quanto no ambiente de testes (Node.js)
 
-## 📌 Autor
 
+📌 Autor
 Jhonatha Oliveira
+
+📄 Licença
+Este projeto está sob a licença MIT.
